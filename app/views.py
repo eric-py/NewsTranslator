@@ -5,24 +5,29 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     pageType = 'index'
-    return render_template('blog/index.html', pageType=pageType)
+    title = 'اخبار روز'
+    return render_template('blog/index.html', pageType=pageType, title=title)
 
 @main.route('/read')
 def read():
     pageType ='read'
-    return render_template('blog/single.html', pageType=pageType)
+    title = 'جزئیات خبر'
+    return render_template('blog/single.html', pageType=pageType, title=title)
 
 @main.route('/news')
 def news():
     pageType = 'news'
-    return render_template('blog/news.html', pageType=pageType)
+    title = 'لیست اخبار'
+    return render_template('blog/news.html', pageType=pageType, title=title)
 
 @main.route('/save')
 def save():
     pageType = 'save'
-    return render_template('blog/save.html', pageType=pageType)
+    title = 'خبرهای ذخیره شده'
+    return render_template('blog/save.html', pageType=pageType, title=title)
 
 @main.route('/search')
 def search():
     pageType = 'search'
-    return render_template('blog/news.html', pageType=pageType)
+    title = 'جستجو'
+    return render_template('blog/news.html', pageType=pageType, title=title)

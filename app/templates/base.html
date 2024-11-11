@@ -9,7 +9,8 @@
 </head>
 <body class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 font-vazirmatn pb-20">
     <div class="w-full max-w-lg mx-auto min-h-screen flex flex-col relative px-4">
-        
+        {% set data = {'title': title} %}
+
         {% if pageType == 'index' %}
             {% include 'includes/index_header.html' %}
         {% elif pageType == 'read' %}
