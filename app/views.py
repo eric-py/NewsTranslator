@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, current_app
+from .models import News
 
 main = Blueprint('main', __name__)
 
@@ -6,7 +7,8 @@ main = Blueprint('main', __name__)
 def index():
     pageType = 'index'
     title = 'اخبار روز'
-    return render_template('blog/index.html', pageType=pageType, title=title)
+    news = News.query.order_by(News.created_at.desc()).limit(current_app.config['POSTS_PER_PAGE'])
+    return render_template('blog/index.html', news=news, pageType=pageType, title=title)
 
 @main.route('/read')
 def read():

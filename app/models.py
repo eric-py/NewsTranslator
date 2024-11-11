@@ -30,3 +30,6 @@ class News(db.Model):
     image_url = db.Column(db.String(500))
     categories = db.relationship('Category', secondary=news_categories, back_populates='news')
     links = db.relationship('NewsLink', back_populates='news')
+
+    def get_time_passed(self):
+        return time_passed(self.created_at)
