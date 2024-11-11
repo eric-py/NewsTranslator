@@ -36,3 +36,6 @@ class News(db.Model):
 
     def get_time_passed(self):
         return time_passed(self.created_at)
+
+    def category(self):
+        return '، '.join([category.name for category in self.categories])

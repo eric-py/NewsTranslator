@@ -7,29 +7,28 @@
 {% block content %}
         <main class="flex-grow animate-fade-in space-y-6 p-4 mt-4">
             <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-                <img src="https://via.placeholder.com/800x400" alt="تصویر خبر" class="w-full h-56 sm:h-64 object-cover">
+                <img src="{{ news.image_url }}" alt="تصویر خبر" class="w-full h-56 sm:h-64 object-cover">
                 <div class="p-4 sm:p-6">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-800 dark:text-gray-200">عنوان کامل خبر در اینجا قرار می‌گیرد</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-800 dark:text-gray-200">{{ news.title | safe }}</h2>
                     <div class="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span>۲ ساعت پیش</span>
+                        <span>{{ news.get_time_passed() }}</span>
                     </div>
                     <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed mb-6">
-                        متن کامل خبر در اینجا قرار می‌گیرد. این متن می‌تواند شامل جزئیات بیشتر، نقل قول‌ها، و اطلاعات تکمیلی باشد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
-                    </p>
-                    <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed mb-6">
-                        کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.
+                        {{ news.content | safe }}
                     </p>
                     <div class="flex flex-col space-y-2">
-                        <span class="text-sm text-indigo-600 dark:text-indigo-400 font-semibold">دسته‌بندی: سیاسی</span>
-                        <a href="#" class="inline-flex mt-1 items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition duration-300 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                            <span class="border-b border-blue-400 dark:border-blue-500">منبع خبر: کلیک کنید</span>
-                        </a>
+                        <span class="text-sm text-indigo-600 dark:text-indigo-400 font-semibold">دسته‌بندی: {{ news.category() }}</span>
+                        {% if news.link %}
+                            <a href="{{ news.link.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex mt-1 items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition duration-300 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                                <span class="border-b border-blue-400 dark:border-blue-500">منبع خبر: کلیک کنید</span>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </article>

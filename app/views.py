@@ -10,11 +10,12 @@ def index():
     news = News.query.order_by(News.created_at.desc()).limit(current_app.config['POSTS_PER_PAGE'])
     return render_template('blog/index.html', news=news, pageType=pageType, title=title)
 
-@main.route('/read')
-def read():
+@main.route('/read/<int:id>')
+def read(id):
     pageType ='read'
     title = 'جزئیات خبر'
-    return render_template('blog/single.html', pageType=pageType, title=title)
+    news = News.query.get_or_404(id)
+    return render_template('blog/single.html', pageType=pageType, title=title, news=news)
 
 @main.route('/news')
 def news():
