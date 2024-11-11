@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, request
 from .models import News
 
 main = Blueprint('main', __name__)
@@ -21,7 +21,12 @@ def read(id):
 def news():
     pageType = 'news'
     title = 'لیست اخبار'
-    return render_template('blog/news.html', pageType=pageType, title=title)
+    page = request.args.get('page', 1, type=int)
+    news = News.query.order_by(News.created_at.desc()).paginate(
+        page=page, 
+        per_page=current_app.config['POSTS_PER_PAGE'], 
+    )
+    return render_template('blog/news.html', pageType=pageType, title=title, news=news)
 
 @main.route('/save')
 def save():
