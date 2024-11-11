@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 font-vazirmatn pb-20">
+    <div class="w-full max-w-lg mx-auto min-h-screen flex flex-col relative px-4">
+        
+        {% if pageType == 'index' %}
+            {% include 'includes/index_header.html' %}
+        {% elif pageType == 'read' %}
+            {% include 'includes/single_header.html' %}
+        {% else %}
+            {% include 'includes/other_header.html' %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+
+        {% if pageType == 'read' %}
+            {% include 'includes/single_menu.html' %}
+        {% else %}
+            {% include 'includes/index_menu.html' %}
+        {% endif %}
+        
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

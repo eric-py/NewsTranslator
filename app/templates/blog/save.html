@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    مقالات ذخیره شده - اخبار روز
+{% endblock %}
+
+{% block content %}
+    <main class="flex-grow animate-fade-in space-y-6 py-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <article class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                <a href="single.html">
+                    <img src="https://via.placeholder.com/400x200" alt="تصویر مقاله" class="w-full h-48 object-cover">
+                </a>
+                <div class="p-4">
+                    <h2 class="text-xl font-bold mb-2 text-gray-800 dark:text-gray-200">عنوان مقاله ذخیره شده اول</h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">خلاصه کوتاهی از مقاله اول که در اینجا نمایش داده می‌شود...</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500 dark:text-gray-400">ذخیره شده در ۲ روز پیش</span>
+                        <a href="single.html" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-bold hover:from-blue-600 hover:to-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            ادامه مطلب...
+                        </a>
+                    </div>
+                </div>
+            </article>
+            <article class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                <a href="single.html">
+                    <img src="https://via.placeholder.com/400x200" alt="تصویر مقاله" class="w-full h-48 object-cover">
+                </a>
+                <div class="p-4">
+                    <h2 class="text-xl font-bold mb-2 text-gray-800 dark:text-gray-200">عنوان مقاله ذخیره شده دوم</h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">خلاصه کوتاهی از مقاله دوم که در اینجا نمایش داده می‌شود...</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500 dark:text-gray-400">ذخیره شده در ۱ هفته پیش</span>
+                        <a href="single.html" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-bold hover:from-blue-600 hover:to-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            ادامه مطلب...
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+         <!-- Pagination -->
+        <div class="flex justify-center mt-8 space-x-2 rtl:space-x-reverse">
+            <button class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition duration-300 ease-in-out transform hover:-translate-y-0.5">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 rtl:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>قبلی</span>
+                </div>
+            </button>
+            <button class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-500 rounded-lg shadow-md hover:from-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition duration-300 ease-in-out transform hover:-translate-y-0.5">
+                <div class="flex items-center">
+                    <span>بعدی</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 rtl:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </button>
+        </div>
+    </main>
+{% endblock %}
