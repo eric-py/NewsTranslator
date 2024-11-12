@@ -1,4 +1,7 @@
-from app.telegram_handlers import main as telegram_main
+from app import create_app
+from app.telegram_handlers import main
 
-if __name__ == "__main__":
-    telegram_main()
+app = create_app()
+
+if __name__ == '__main__':
+    main(app)
