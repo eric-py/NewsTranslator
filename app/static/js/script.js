@@ -79,8 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('لطفاً از طریق ربات تلگرام وارد شوید.');
                 return;
             }
-
-            const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
             
             fetch('/toggle_save_news', {
                 method: 'POST',
@@ -89,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify({
-                    user_id: userId,
                     news_id: newsId
                 })
             })
@@ -112,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
         
-        fetch(`/check_save_status?user_id=${userId}&news_id=${newsId}`)
+        fetch(`/check_save_status?news_id=${newsId}`)
         .then(response => response.json())
         .then(data => {
             updateSaveButtonUI(data.is_saved);
@@ -156,4 +153,18 @@ document.addEventListener('DOMContentLoaded', function () {
             button.addEventListener('click', shareContent);
         }
     });
+
+    if (window.Telegram && window.Telegram.WebApp) {
+                var userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+                fetch("/set_telegram_user_id", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({user_id: userId}),
+                })
+                .then(response => response.json())
+    }
+    
 });

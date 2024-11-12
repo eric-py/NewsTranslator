@@ -6,6 +6,8 @@ load_dotenv()
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    SESSION_TYPE = 'filesystem'
+    SESSION_PERMANENT = True
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
     UPLOAD_FOLDER = os.path.abspath(os.path.dirname(__file__)) + '/static/uploads'
     TEMPLATES_FOLDER = os.path.abspath(os.path.dirname(__file__)) + '/templates'
