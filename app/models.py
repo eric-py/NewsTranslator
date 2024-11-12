@@ -24,6 +24,21 @@ class NewsLink(db.Model):
     def __repr__(self):
         return self.url
 
+saved_news = db.Table('saved_news',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('news_id', db.Integer, db.ForeignKey('news.id'), primary_key=True)
+)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    telegram_id = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(db.String(100))
+    join_date = db.Column(db.DateTime, default=datetime.utcnow)
+    saved_news = db.relationship('News', secondary=saved_news, back_populates='saved_by')
+
+    def __repr__(self):
+        return self.telegram_id
+
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
@@ -33,6 +48,7 @@ class News(db.Model):
     image_url = db.Column(db.String(500))
     categories = db.relationship('Category', secondary=news_categories, back_populates='news')
     link = db.relationship('NewsLink', back_populates='news', uselist=False)
+    saved_by = db.relationship('User', secondary=saved_news, back_populates='saved_news')
 
     def get_time_passed(self):
         return time_passed(self.created_at)
