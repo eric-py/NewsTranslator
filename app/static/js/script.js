@@ -1,4 +1,36 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+
+    function setDarkMode(isDark) {
+        if (isDark) {
+            html.classList.add('dark');
+            sessionStorage.setItem('darkMode', 'true');
+        } else {
+            html.classList.remove('dark');
+            sessionStorage.setItem('darkMode', 'false');
+        }
+    }
+
+    const savedDarkMode = sessionStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+        setDarkMode(true);
+    } else if (savedDarkMode === 'false') {
+        setDarkMode(false);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        if (window.Telegram.WebApp.colorScheme == 'dark') {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
+    }
+
+    darkModeToggle.addEventListener('click', function() {
+        const isDark = html.classList.contains('dark');
+        setDarkMode(!isDark);
+    });
+
     const searchToggle = document.getElementById('searchToggle');
     const headerTitle = document.getElementById('headerTitle');
     const searchInput = document.getElementById('searchInput');
@@ -34,64 +66,70 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function updateDarkModeIcon(isDark) {
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        if (darkModeToggle) {
-            const moonIcon = darkModeToggle.querySelector('.moon-icon');
-            const sunIcon = darkModeToggle.querySelector('.sun-icon');
+    const saveNewsBtn = document.getElementById('saveNewsBtn');
+    const saveIcon = document.getElementById('saveIcon');
+    const saveText = document.getElementById('saveText');
+    const newsId = document.getElementById('newsId')?.value;
+
+    if (saveNewsBtn && newsId) {
+        checkSaveStatus();
+
+        saveNewsBtn.addEventListener('click', function() {
+            if (!window.Telegram.WebApp.initDataUnsafe.user) {
+                alert('لطفاً از طریق ربات تلگرام وارد شوید.');
+                return;
+            }
+
+            const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
             
-            if (isDark) {
-                moonIcon.classList.add('hidden');
-                sunIcon.classList.remove('hidden');
-                darkModeText.textContent = 'حالت روز';
-            } else {
-                moonIcon.classList.remove('hidden');
-                sunIcon.classList.add('hidden');
-                darkModeText.textContent = 'حالت شب';
-            }
-        }
-    }
-
-    function toggleDarkMode() {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-        updateDarkModeIcon(isDark);
-    }
-
-    // تنظیم وضعیت اولیه حالت شب و آیکون
-    const isDarkModeEnabled = localStorage.getItem('darkMode') === 'enabled';
-    if (isDarkModeEnabled) {
-        document.documentElement.classList.add('dark');
-    }
-    updateDarkModeIcon(isDarkModeEnabled);
-
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', toggleDarkMode);
-    }
-
-    const saveButton = document.getElementById('saveButton');
-    if (saveButton) {
-        const saveButtonText = saveButton.querySelector('span');
-        const saveButtonIcon = saveButton.querySelector('svg');
-
-        saveButton.addEventListener('click', function() {
-            const isSaved = saveButton.getAttribute('data-saved') === 'true';
-
-            if (isSaved) {
-                saveButtonText.textContent = 'ذخیره';
-                saveButtonIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />';
-                saveButtonIcon.setAttribute('fill', 'none');
-                saveButtonIcon.setAttribute('stroke', 'currentColor');
-                saveButton.setAttribute('data-saved', 'false');
-            } else {
-                saveButtonText.textContent = 'ذخیره شده';
-                saveButtonIcon.innerHTML = '<path fill-rule="evenodd" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />';
-                saveButtonIcon.setAttribute('fill', 'currentColor');
-                saveButtonIcon.setAttribute('stroke', 'none');
-                saveButton.setAttribute('data-saved', 'true');
-            }
+            fetch('/toggle_save_news', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    news_id: newsId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateSaveButtonUI(data.is_saved);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         });
+    }
+
+    function checkSaveStatus() {
+        if (!window.Telegram.WebApp.initDataUnsafe.user) {
+            return;
+        }
+
+        const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+        
+        fetch(`/check_save_status?user_id=${userId}&news_id=${newsId}`)
+        .then(response => response.json())
+        .then(data => {
+            updateSaveButtonUI(data.is_saved);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function updateSaveButtonUI(isSaved) {
+        if (isSaved) {
+            saveIcon.setAttribute('fill', 'currentColor');
+            saveText.textContent = 'ذخیره شده';
+        } else {
+            saveIcon.setAttribute('fill', 'none');
+            saveText.textContent = 'ذخیره';
+        }
     }
 
     function shareContent(event) {
@@ -118,17 +156,4 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', shareContent);
         }
     });
-
-    console.log('All scripts loaded successfully');
-
-    if (window.Telegram && window.Telegram.WebApp) {
-        const colorScheme = window.Telegram.WebApp.colorScheme;
-        const html = document.documentElement;
-        if (colorScheme === 'dark') {
-            html.classList.add('dark');
-        } else {
-            html.classList.remove('dark');
-        }
-        updateDarkModeIcon(colorScheme === 'dark');
-    }
 });
