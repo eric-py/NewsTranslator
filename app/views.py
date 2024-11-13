@@ -22,8 +22,22 @@ def news():
 
 @main.route('/search')
 def search():
-    return render_template('blog/news.html', pageType='search', title='جستجو')
-
+    query = request.args.get('q', '')
+    page = request.args.get('page', 1, type=int)
+    
+    if query:
+        pagination = News.query.filter(News.title.ilike(f'%{query}%') | News.content.ilike(f'%{query}%'))\
+            .order_by(News.created_at.desc())\
+            .paginate(page=page, per_page=current_app.config['POSTS_PER_PAGE'])
+    else:
+        pagination = News.query.order_by(News.created_at.desc())\
+            .paginate(page=page, per_page=current_app.config['POSTS_PER_PAGE'])
+    
+    return render_template('blog/news.html', 
+                           pageType='search', 
+                           title='جستجو: %s' % query, 
+                           pagination=pagination,
+                           query=query)
 @main.route('/save')
 def save():
     if 'telegram_user_id' not in session:
