@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             
-            fetch('/toggle_save_news', {
+            fetch('/api/toggle_save_news', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
         
-        fetch(`/check_save_status?news_id=${newsId}`)
+        fetch(`/api/check_save_status?news_id=${newsId}`)
         .then(response => response.json())
         .then(data => {
             updateSaveButtonUI(data.is_saved);
@@ -175,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     } catch (error) {
         console.error('Error sharing via Telegram:', error);
-        alert('خطا در اشتراک‌گذاری خبر. لطفاً دوباره تلاش کنید.');
     }
 }
 
@@ -188,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (window.Telegram && window.Telegram.WebApp) {
                 var userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-                fetch("/set_telegram_user_id", {
+                fetch("/api/set_telegram_user_id", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
