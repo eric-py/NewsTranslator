@@ -32,25 +32,28 @@
                     </div>
                 </div>
             </article>
-
             <section class="mt-8">
                 <h3 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">اخبار مرتبط</h3>
                 <div class="space-y-4">
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 flex items-center hover:shadow-lg transition duration-300">
-                        <img src="https://via.placeholder.com/80" alt="تصویر خبر مرتبط" class="w-20 h-20 object-cover rounded-lg mr-4 ml-2">
-                        <div>
-                            <h4 class="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200">عنوان خبر مرتبط</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">خلاصه کوتاهی از خبر مرتبط...</p>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 flex items-center hover:shadow-lg transition duration-300">
-                        <img src="https://via.placeholder.com/80" alt="تصویر خبر مرتبط" class="w-20 h-20 object-cover rounded-lg mr-4 ml-2">
-                        <div>
-                            <h4 class="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200">عنوان خبر مرتبط دیگر</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">خلاصه کوتاهی از خبر مرتبط دیگر...</p>
-                        </div>
-                    </div>
+                    {% if related_news %}
+                        {% for related in related_news %}
+                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 flex items-center hover:shadow-lg transition duration-300">
+                                <a href="{{ url_for('main.read', id=related.id) }}" class="flex items-center w-full">
+                                    <img src="{{ related.image_url }}" alt="تصویر {{ related.title }}" class="w-20 h-20 object-cover rounded-lg mr-4 ml-2">
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200">{{ related.title | safe | truncate(40) }}</h4>
+                                        <p class="text-gray-600 dark:text-gray-400 text-sm">{{ related.content | safe | truncate(50) }}</p>
+                                        <span class="text-xs text-indigo-600 dark:text-indigo-400">{{ related.get_time_passed() }}</span>
+                                    </div>
+                                </a>
+                            </div>
+                        
+                    {% endfor %}
+                    {% else %}
+                        <p class="text-gray-600 dark:text-gray-400">در حال حاضر خبر مرتبطی وجود ندارد.</p>
+                     {% endif %}
                 </div>
             </section>
+           
         </main>
 {% endblock %}

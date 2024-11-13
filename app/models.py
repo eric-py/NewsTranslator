@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func, desc
+from collections import Counter
 from datetime import datetime
 from .utils import time_passed
 
@@ -55,3 +57,30 @@ class News(db.Model):
 
     def category(self):
         return '، '.join([category.name for category in self.categories])
+    
+    def get_related_news(self, limit=3):
+        related_ids = db.session.query(news_categories.c.news_id).filter(
+            news_categories.c.category_id.in_([c.id for c in self.categories]),
+            news_categories.c.news_id != self.id
+        ).distinct().all()
+        
+        related_ids = [r[0] for r in related_ids]
+        
+        if not related_ids:
+            return None
+        
+        category_counts = Counter()
+        for news_id in related_ids:
+            categories = db.session.query(news_categories.c.category_id).filter(
+                news_categories.c.news_id == news_id,
+                news_categories.c.category_id.in_([c.id for c in self.categories])
+            ).all()
+            category_counts[news_id] = len(categories)
+        
+        sorted_related_ids = sorted(category_counts, key=lambda x: (-category_counts[x], News.query.get(x).news_date), reverse=True)
+        
+        related_news = News.query.filter(News.id.in_(sorted_related_ids[:limit])).all()
+        
+        related_news.sort(key=lambda x: (-category_counts[x.id], x.news_date), reverse=True)
+        
+        return related_news

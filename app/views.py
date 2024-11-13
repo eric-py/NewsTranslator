@@ -12,7 +12,8 @@ def index():
 @main.route('/read/<int:id>')
 def read(id):
     news = News.query.get_or_404(id)
-    return render_template('blog/single.html', pageType='read', title='جزئیات خبر', news=news)
+    related_news = news.get_related_news()
+    return render_template('blog/single.html', pageType='read', title='جزئیات خبر', news=news, related_news=related_news)
 
 @main.route('/news')
 def news():
