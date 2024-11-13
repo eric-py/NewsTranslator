@@ -3,6 +3,7 @@ from .config import Config
 from .views import main
 from .models import db
 from .error_handlers import error_handlers
+from .api import api
 import os
 
 def create_app():
@@ -16,6 +17,7 @@ def create_app():
     os.makedirs(app.config['STATIC_FOLDER'], exist_ok=True)
 
     app.register_blueprint(main, url_prefix = '/')
+    app.register_blueprint(api, url_prefix = '/api/')
     # app.register_blueprint(error_handlers, url_prefix= '/errors/')
 
     @app.before_request

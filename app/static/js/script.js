@@ -129,28 +129,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function shareContent(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (navigator.share) {
-            navigator.share({
-                title: 'عنوان خبر',
-                text: 'متن خلاصه خبر برای اشتراک‌گذاری',
-                url: window.location.href
-            }).then(() => {
-                console.log('موفقیت در اشتراک‌گذاری');
-            }).catch((error) => {
-                console.log('خطا در اشتراک‌گذاری:', error);
-            });
-        } else {
-            alert('متاسفانه مرورگر شما از قابلیت اشتراک‌گذاری پشتیبانی نمی‌کند.');
-        }
+    async function shareViaTelegram(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initDataUnsafe.user) {
+        alert('لطفاً از طریق ربات تلگرام وارد شوید.');
+        return;
     }
+
+    try {
+        const newsId = document.getElementById('newsId')?.value;
+        if (!newsId) {
+            console.error('News ID not found');
+            return;
+        }
+
+        const newsResponse = await fetch(`/api/news/${newsId}`);
+        if (!newsResponse.ok) {
+            throw new Error(`HTTP error! status: ${newsResponse.status}`);
+        }
+        const newsData = await newsResponse.json();
+
+        const botResponse = await fetch('/api/bot_username');
+        if (!botResponse.ok) {
+            throw new Error(`HTTP error! status: ${botResponse.status}`);
+        }
+        const botData = await botResponse.json();
+        const botUsername = botData.bot_username;
+
+        if (!botUsername) {
+            console.error('Bot username not found');
+            return;
+        }
+
+        let shareText = `📰 ${newsData.title}\n\n`;
+        shareText += `🔗 برای مطالعه کامل خبر، کلیک کنید:\n`;
+        shareText += `https://t.me/${botUsername}?start=news_${newsId}`;
+
+        const shareUrl = `https://t.me/share/url?text=${encodeURIComponent(shareText)}`;
+
+        console.log('Share URL:', shareUrl);
+
+        window.Telegram.WebApp.openTelegramLink(shareUrl);
+
+    } catch (error) {
+        console.error('Error sharing via Telegram:', error);
+        alert('خطا در اشتراک‌گذاری خبر. لطفاً دوباره تلاش کنید.');
+    }
+}
 
     const shareButtons = document.querySelectorAll('#shareButton, #shareButtonBottom');
     shareButtons.forEach(button => {
         if (button) {
-            button.addEventListener('click', shareContent);
+            button.addEventListener('click', shareViaTelegram);
         }
     });
 
