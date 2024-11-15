@@ -14,13 +14,13 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span>{{ news.get_time_passed() }}</span>
+                        <span class="mr-1 mt-1">{{ news.get_time_passed() }}</span>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed mb-6">
+                    <div class="prose prose-lg dark:prose-invert text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                         {{ news.content | safe }}
-                    </p>
+                    </div>
                     <div class="flex flex-col space-y-2">
-                        <span class="text-sm text-indigo-600 dark:text-indigo-400 font-semibold">دسته‌بندی: {{ news.category() }}</span>
+                        <span class="text-sm text-indigo-600 dark:text-indigo-400 font-semibold">برچسب‌ها: {{ news.category() }}</span>
                         {% if news.link %}
                             <a href="{{ news.link.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex mt-1 items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition duration-300 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 group-hover:animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,7 +42,7 @@
                                     <img src="{{ related.image_url }}" alt="تصویر {{ related.title }}" class="w-20 h-20 object-cover rounded-lg mr-4 ml-2">
                                     <div>
                                         <h4 class="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200">{{ related.title | safe | truncate(40) }}</h4>
-                                        <p class="text-gray-600 dark:text-gray-400 text-sm">{{ related.content | safe | truncate(50) }}</p>
+                                        <div class="text-gray-600 dark:text-gray-400 text-sm">{{ related.content | safe | truncate(50) }}</div>
                                         <span class="text-xs text-indigo-600 dark:text-indigo-400">{{ related.get_time_passed() }}</span>
                                     </div>
                                 </a>

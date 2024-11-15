@@ -14,12 +14,14 @@
                 </a>
                 <div class="p-4">
                     <h2 class="text-xl font-bold mb-2 text-gray-800 dark:text-gray-200">{{ post.title | safe }}</h2>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">{{ post.content | safe | truncate(100) }}</p>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm mb-4">{{ post.content | safe | truncate(100) }}</span>
+                    <div class="mt-2" >
                     <div class="flex justify-between items-center">
                         <span class="text-xs text-gray-500 dark:text-gray-400">{{ post.get_time_passed() }}</span>
                         <a href="{{ url_for('main.read', id=post.id) }}" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-bold hover:from-blue-600 hover:to-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
                             ادامه مطلب...
                         </a>
+                    </div>
                     </div>
                 </div>
             </article>

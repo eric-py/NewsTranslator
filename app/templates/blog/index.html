@@ -24,7 +24,7 @@
                     </a>
                 </div>
                 <div class="p-4 sm:p-6">
-                    <p class="text-gray-700 dark:text-gray-300 mb-3 text-base sm:text-lg">{{ post.content | truncate(100) | safe }}</p>
+                    <span class="text-gray-700 dark:text-gray-300 mb-3 text-base sm:text-lg">{{ post.content | truncate(100) | safe }}</span>
                     <div class="flex justify-between items-center">
                         <span class="text-xs sm:text-sm text-indigo-600 dark:text-indigo-400 font-semibold">{{ post.get_time_passed() }}</span>
                         <a href="{{ url_for('main.read', id=post.id) }}" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-bold hover:from-blue-600 hover:to-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
@@ -51,7 +51,7 @@
                             <a href="{{ url_for('main.read', id=post.id) }}">
                                 <h3 class="text-base sm:text-lg font-semibold mb-1 text-gray-800 dark:text-gray-200">{{ post.title | truncate(30) | safe }}</h3>
                             </a>
-                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">{{ post.content | truncate(35) | safe }}</p>
+                            <span class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2">{{ post.content | truncate(50) | safe }}</span>
                             <div class="flex justify-between items-center">
                                 <span class="text-xs text-secondary dark:text-blue-400">{{ post.get_time_passed() }}</span>
                                 <a href="{{ url_for('main.read', id=post.id) }}" class="text-primary dark:text-blue-400 text-xs sm:text-sm hover:underline focus:outline-none">بیشتر...</a>
