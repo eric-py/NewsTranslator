@@ -46,7 +46,7 @@ class News(db.Model):
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     news_date = db.Column(db.DateTime, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
     image_url = db.Column(db.String(500))
     categories = db.relationship('Category', secondary=news_categories, back_populates='news')
     link = db.relationship('NewsLink', back_populates='news', uselist=False)
